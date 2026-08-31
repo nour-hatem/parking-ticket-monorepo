@@ -1,1 +1,18 @@
-node_modules
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+tsconfig.build.tsbuildinfo
+
+# Environment — NEVER commit secrets
+.env
+.env.local
+
+# Logs
+*.log
+logs/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
