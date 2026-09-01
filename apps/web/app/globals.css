@@ -34,3 +34,73 @@ h1 {
   font-size: 1.75rem;
   margin-bottom: 1.25rem;      /* space between heading and the nav link / form below */
 }
+
+/* ─── Navigation link ────────────────────────────────────── */
+
+/* Makes the About link look like a proper link instead of plain inherited text */
+.nav-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: #0070f3;              /* Next.js blue — recognizable link color */
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.nav-link:hover {
+  text-decoration: underline;  /* visual feedback on hover */
+}
+
+/* ─── Ticket form ────────────────────────────────────────── */
+
+/* Puts input and button in a row with a gap between them */
+.ticket-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.75rem;      /* breathing room between form and the list */
+}
+
+/* Input stretches to fill all available width, leaving button its natural size */
+.ticket-form input {
+  flex: 1;                     /* takes all remaining space after the button */
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ced4da;   /* light grey border */
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;        /* use the same font as the rest of the page */
+  outline-color: #0070f3;      /* blue focus ring instead of browser default */
+}
+
+.ticket-form button {
+  padding: 0.5rem 1.1rem;
+  background-color: #0070f3;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+  cursor: pointer;             /* shows a hand cursor on hover — signals clickability */
+  transition: background-color 0.15s ease;  /* smooth color change on hover */
+}
+
+.ticket-form button:hover {
+  background-color: #005bb5;   /* darker shade — confirms interaction */
+}
+
+/* ─── Ticket list ────────────────────────────────────────── */
+
+/* Removes default bullet points; stacks items vertically with gaps */
+.ticket-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Each ticket row: light background card with subtle border */
+.ticket-item {
+  background-color: #ffffff;   /* white card against the light-grey page background */
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;   /* very light border — defines the card without being heavy */
+}
+
