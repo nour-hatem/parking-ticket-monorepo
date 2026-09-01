@@ -1,5 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  output          = "../generated/prisma"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
@@ -20,6 +22,7 @@ model User {
   name      String?  @db.VarChar(255)
   role      Role     @default(USER)
   createdAt DateTime @default(now()) @db.Timestamptz(6)
+  tickets   Ticket[]
 
   @@map("users")
 }
@@ -29,6 +32,8 @@ model Ticket {
   plate     String   @db.VarChar(20)
   status    String   @default("waiting") @db.VarChar(20)
   createdAt DateTime @default(now()) @db.Timestamptz(6)
+  userId    String?  @db.Uuid
+  user      User?    @relation(fields: [userId], references: [id])
 
   @@map("tickets")
 }
