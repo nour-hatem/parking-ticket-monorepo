@@ -7,6 +7,12 @@
       "skillPath": "skills/architect/SKILL.md",
       "computedHash": "ff57c65a06ca4047420113d1eaa18e5002bc657224688b9350a1f06d77204327"
     },
+    "arcjet": {
+      "source": "arcjet/skills",
+      "sourceType": "github",
+      "skillPath": "arcjet/SKILL.md",
+      "computedHash": "e297c2ced9dc0641b80eddef0f3618c9772c76209d12884099c799c82fcb0cc9"
+    },
     "audit": {
       "source": "jsmastery-pro/skills",
       "sourceType": "github",
