@@ -15,8 +15,8 @@ Full roadmap: `docs/project-plan.md`
 > ⚠️ This block is owned by `/sync`. Do not edit manually.
 > After each phase completes, run `/sync` to update this section.
 
-**Active:** Phase 5 — Auth & Authorization (JWT & Guards)  
-**Next action:** Implement AuthModule, JwtAuthGuard, RolesGuard, and Login endpoint.
+**Active:** Phase 6 — Production Ready (Swagger, Health, Docker)  
+**Next action:** Add Swagger/OpenAPI docs, Terminus health checks, and Pino structured logger.
 
 ### Progress
 
@@ -27,8 +27,8 @@ Full roadmap: `docs/project-plan.md`
 | 2 | Adapter Pattern | ✅ Done |
 | 3 | Database & Migrations | ✅ Done |
 | 4 | Event Bus & Audit | ✅ Done |
-| 5 | Auth & Authorization | 🔄 In Progress |
-| 6 | Production Ready | ⬜ Pending |
+| 5 | Auth & Authorization | ✅ Done |
+| 6 | Production Ready | 🔄 In Progress |
 
 ## Role
 

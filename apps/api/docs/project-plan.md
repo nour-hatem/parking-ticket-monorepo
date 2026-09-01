@@ -364,5 +364,5 @@ Only if everything else is done with time to spare.
 - [x] Phase 2 — Adapter Pattern
 - [x] Phase 3 — Database & Migrations
 - [x] Phase 4 — Event Bus & Audit
-- [ ] Phase 5 — Auth & Authorization (stretch)
+- [x] Phase 5 — Auth & Authorization (stretch)
 - [ ] Phase 6 — Production Ready (stretch)
