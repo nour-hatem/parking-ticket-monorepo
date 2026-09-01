@@ -21,10 +21,10 @@ export default function HomePage() {
   }
 
   return (
-    <main>
+    <main className="container">
       <h1>Parking Tickets</h1>
-      <Link href="/about">About</Link>
-      <form onSubmit={handleSubmit}>
+      <Link href="/about" className="nav-link">About</Link>
+      <form onSubmit={handleSubmit} className="ticket-form">
         <input
           value={plate}
           onChange={(e) => setPlate(e.target.value)}
@@ -32,9 +32,9 @@ export default function HomePage() {
         />
         <button type="submit">Create Ticket</button>
       </form>
-      <ul>
+      <ul className="ticket-list">
         {tickets.map((ticket) => (
-          <li key={ticket.id}>
+          <li key={ticket.id} className="ticket-item">
             {ticket.plate} — {ticket.status}
           </li>
         ))}
