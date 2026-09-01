@@ -4,6 +4,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
+import { AuthModule } from './auth/auth.module.js';
 import { PrismaModule } from './prisma/prisma.module.js';
 import { TicketEntity } from './tickets/ticket.entity.js';
 import { TicketsModule } from './tickets/tickets.module.js';
@@ -29,6 +30,7 @@ import { TicketsModule } from './tickets/tickets.module.js';
       }),
     }),
     PrismaModule,
+    AuthModule,
     TicketsModule,
   ],
   controllers: [AppController],
