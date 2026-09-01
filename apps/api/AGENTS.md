@@ -15,8 +15,8 @@ Full roadmap: `docs/project-plan.md`
 > ⚠️ This block is owned by `/sync`. Do not edit manually.
 > After each phase completes, run `/sync` to update this section.
 
-**Active:** Phase 2 — Adapter Pattern (Ports & Adapters)  
-**Next action:** Define IPlateLookupPort interface, build FakePlateLookupAdapter, wire into TicketsModule.
+**Active:** Phase 3 — Database & Migrations (PostgreSQL + TypeORM)  
+**Next action:** Configure PostgreSQL in docker-compose.yml, setup TypeORM & entities, and run migrations.
 
 ### Progress
 
@@ -24,11 +24,10 @@ Full roadmap: `docs/project-plan.md`
 |-------|------|--------|
 | 0 | Bootstrap | ✅ Done |
 | 1 | Core CRUD (In-Memory) | ✅ Done |
-| 2 | Adapter Pattern | 🔄 In Progress |
-| 3 | Database & Migrations | ⬜ Pending |
+| 2 | Adapter Pattern | ✅ Done |
+| 3 | Database & Migrations | 🔄 In Progress |
 | 4 | Event Bus & Audit | ⬜ Pending |
 | 5 | Auth & Authorization | ⬜ Pending |
-| 6 | Production Ready | ⬜ Pending |
 | 6 | Production Ready | ⬜ Pending |
 
 ## Role

@@ -361,7 +361,7 @@ Only if everything else is done with time to spare.
 
 - [x] Phase 0 — Bootstrap
 - [x] Phase 1 — Core CRUD (In-Memory)
-- [ ] Phase 2 — Adapter Pattern
+- [x] Phase 2 — Adapter Pattern
 - [ ] Phase 3 — Database & Migrations
 - [ ] Phase 4 — Event Bus & Audit
 - [ ] Phase 5 — Auth & Authorization (stretch)
