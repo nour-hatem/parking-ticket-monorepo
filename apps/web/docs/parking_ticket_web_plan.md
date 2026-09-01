@@ -154,7 +154,7 @@ Concepts to explain: file-based routing convention (`app/about/page.tsx` → `/a
 
 ## Progress Tracker
 
-- [ ] Scaffold created
-- [ ] Phase 1 — Static page with mock data
+- [x] Scaffold created
+- [x] Phase 1 — Static page with mock data
 - [ ] Phase 2 — Interactive form with client-side state
 - [ ] Phase 3 — Basic navigation between two routes
