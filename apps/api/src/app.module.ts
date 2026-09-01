@@ -2,9 +2,12 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { AuthModule } from './auth/auth.module.js';
+import { configValidationSchema } from './common/config/config.schema.js';
+import { HealthModule } from './health/health.module.js';
 import { PrismaModule } from './prisma/prisma.module.js';
 import { TicketEntity } from './tickets/ticket.entity.js';
 import { TicketsModule } from './tickets/tickets.module.js';
@@ -13,6 +16,28 @@ import { TicketsModule } from './tickets/tickets.module.js';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      validationSchema: configValidationSchema,
+    }),
+    LoggerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        const isProduction = configService.get<string>('NODE_ENV') === 'production';
+        return {
+          pinoHttp: {
+            transport: isProduction
+              ? undefined
+              : {
+                  target: 'pino-pretty',
+                  options: {
+                    singleLine: true,
+                    colorize: true,
+                  },
+                },
+            level: isProduction ? 'info' : 'debug',
+          },
+        };
+      },
     }),
     EventEmitterModule.forRoot(),
     TypeOrmModule.forRootAsync({
@@ -32,6 +57,7 @@ import { TicketsModule } from './tickets/tickets.module.js';
     PrismaModule,
     AuthModule,
     TicketsModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
