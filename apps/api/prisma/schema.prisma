@@ -1,0 +1,17 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Ticket {
+  id        String   @id(map: "PK_tickets_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  plate     String   @db.VarChar(20)
+  status    String   @default("waiting") @db.VarChar(20)
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+
+  @@map("tickets")
+}
