@@ -1,7 +1,9 @@
 import { ForbiddenException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateTicketDto } from './dto/create-ticket.dto.js';
+import { TicketCreatedEvent } from './events/ticket-created.event.js';
 import type { Ticket } from './interfaces/ticket.interface.js';
 import { type IPlateLookupPort, PLATE_LOOKUP_PORT } from './ports/plate-lookup.port.js';
 import { TicketEntity } from './ticket.entity.js';
@@ -13,6 +15,7 @@ export class TicketsService {
     private readonly ticketsRepository: Repository<TicketEntity>,
     @Inject(PLATE_LOOKUP_PORT)
     private readonly plateLookup: IPlateLookupPort,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async create(dto: CreateTicketDto): Promise<Ticket> {
@@ -23,12 +26,17 @@ export class TicketsService {
       );
     }
 
-    const ticket = this.ticketsRepository.create({
+    const ticketEntity = this.ticketsRepository.create({
       plate: dto.plate,
       status: 'waiting',
     });
 
-    return await this.ticketsRepository.save(ticket);
+    const savedTicket = await this.ticketsRepository.save(ticketEntity);
+
+    // Emit event after ticket is persisted
+    this.eventEmitter.emit('ticket.created', new TicketCreatedEvent(savedTicket));
+
+    return savedTicket;
   }
 
   async findAll(): Promise<Ticket[]> {
