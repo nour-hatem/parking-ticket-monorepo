@@ -1,6 +1,8 @@
 'use client';
 import { useState } from 'react';
+import Link from 'next/link';
 import { mockTickets, type Ticket } from './lib/mock-tickets';
+
 
 export default function HomePage() {
   const [tickets, setTickets] = useState<Ticket[]>(mockTickets);
@@ -21,6 +23,7 @@ export default function HomePage() {
   return (
     <main>
       <h1>Parking Tickets</h1>
+      <Link href="/about">About</Link>
       <form onSubmit={handleSubmit}>
         <input
           value={plate}
