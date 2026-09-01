@@ -1,18 +1,15 @@
 import { ForbiddenException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateTicketDto } from './dto/create-ticket.dto.js';
 import { TicketCreatedEvent } from './events/ticket-created.event.js';
 import type { Ticket } from './interfaces/ticket.interface.js';
 import { type IPlateLookupPort, PLATE_LOOKUP_PORT } from './ports/plate-lookup.port.js';
-import { TicketEntity } from './ticket.entity.js';
 
 @Injectable()
 export class TicketsService {
   constructor(
-    @InjectRepository(TicketEntity)
-    private readonly ticketsRepository: Repository<TicketEntity>,
+    private readonly prisma: PrismaService,
     @Inject(PLATE_LOOKUP_PORT)
     private readonly plateLookup: IPlateLookupPort,
     private readonly eventEmitter: EventEmitter2,
@@ -26,30 +23,33 @@ export class TicketsService {
       );
     }
 
-    const ticketEntity = this.ticketsRepository.create({
-      plate: dto.plate,
-      status: 'waiting',
+    const savedTicket = await this.prisma.ticket.create({
+      data: {
+        plate: dto.plate,
+        status: 'waiting',
+      },
     });
 
-    const savedTicket = await this.ticketsRepository.save(ticketEntity);
+    // Emit event after ticket is persisted in Prisma
+    this.eventEmitter.emit('ticket.created', new TicketCreatedEvent(savedTicket as Ticket));
 
-    // Emit event after ticket is persisted
-    this.eventEmitter.emit('ticket.created', new TicketCreatedEvent(savedTicket));
-
-    return savedTicket;
+    return savedTicket as Ticket;
   }
 
   async findAll(): Promise<Ticket[]> {
-    return await this.ticketsRepository.find({
-      order: { createdAt: 'DESC' },
+    const tickets = await this.prisma.ticket.findMany({
+      orderBy: { createdAt: 'desc' },
     });
+    return tickets as Ticket[];
   }
 
   async findOne(id: string): Promise<Ticket> {
-    const ticket = await this.ticketsRepository.findOneBy({ id });
+    const ticket = await this.prisma.ticket.findUnique({
+      where: { id },
+    });
     if (!ticket) {
       throw new NotFoundException(`Ticket with ID "${id}" not found`);
     }
-    return ticket;
+    return ticket as Ticket;
   }
 }
