@@ -15,8 +15,8 @@ Full roadmap: `docs/project-plan.md`
 > ⚠️ This block is owned by `/sync`. Do not edit manually.
 > After each phase completes, run `/sync` to update this section.
 
-**Active:** Phase 4 — Event Bus & Audit Log (@nestjs/event-emitter)  
-**Next action:** Setup EventEmitterModule, create TicketCreatedEvent, build AuditListener.
+**Active:** Phase 5 — Auth & Authorization (JWT & Guards)  
+**Next action:** Implement AuthModule, JwtAuthGuard, RolesGuard, and Login endpoint.
 
 ### Progress
 
@@ -26,8 +26,8 @@ Full roadmap: `docs/project-plan.md`
 | 1 | Core CRUD (In-Memory) | ✅ Done |
 | 2 | Adapter Pattern | ✅ Done |
 | 3 | Database & Migrations | ✅ Done |
-| 4 | Event Bus & Audit | 🔄 In Progress |
-| 5 | Auth & Authorization | ⬜ Pending |
+| 4 | Event Bus & Audit | ✅ Done |
+| 5 | Auth & Authorization | 🔄 In Progress |
 | 6 | Production Ready | ⬜ Pending |
 
 ## Role
