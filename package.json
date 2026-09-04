@@ -1,0 +1,22 @@
+{
+  "name": "parking-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Unified Full-Stack Parking Ticket Management System Monorepo",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:api": "npm run start:dev --workspace=@parking-system/api",
+    "dev:web": "npm run dev --workspace=@parking-system/web",
+    "build:api": "npm run build --workspace=@parking-system/api",
+    "build:web": "npm run build --workspace=@parking-system/web",
+    "build": "npm run build --workspaces",
+    "lint": "npm run lint --workspaces",
+    "test:api": "npm run test --workspace=@parking-system/api"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}
