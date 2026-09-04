@@ -1,45 +1,87 @@
 'use client';
-import { useState } from 'react';
-import Link from 'next/link';
-import { mockTickets, type Ticket } from './lib/mock-tickets';
 
+import { useEffect, useState } from 'react';
+import type { Ticket } from '@parking-system/shared';
+import { fetchTickets } from '../lib/api';
+import { getSocket } from '../lib/socket';
+import { TicketForm } from '../components/ticket-form';
+import { TicketList } from '../components/ticket-list';
 
 export default function HomePage() {
-  const [tickets, setTickets] = useState<Ticket[]>(mockTickets);
-  const [plate, setPlate] = useState('');
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [connected, setConnected] = useState(false);
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    const newTicket: Ticket = {
-      id: crypto.randomUUID(),
-      plate,
-      status: 'waiting',
-      createdAt: new Date().toISOString(),
+  // B.1 — Fetch initial tickets list from NestJS API on load
+  useEffect(() => {
+    fetchTickets()
+      .then((data) => {
+        setTickets(data);
+      })
+      .catch((err) => {
+        console.error('Failed to fetch initial tickets:', err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  // B.3 — Socket.io live listener
+  useEffect(() => {
+    const socket = getSocket();
+
+    function onConnect() {
+      setConnected(true);
+    }
+
+    function onDisconnect() {
+      setConnected(false);
+    }
+
+    function onTicketCreated(newTicket: Ticket) {
+      setTickets((prev) => {
+        // Avoid duplicate items if socket fires repeatedly
+        if (prev.some((t) => t.id === newTicket.id)) return prev;
+        return [newTicket, ...prev];
+      });
+    }
+
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+    socket.on('ticket.created', onTicketCreated);
+
+    if (socket.connected) {
+      setConnected(true);
+    }
+
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+      socket.off('ticket.created', onTicketCreated);
     };
-    setTickets([newTicket, ...tickets]);
-    setPlate('');
-  }
+  }, []);
 
   return (
     <main className="container">
-      <h1>Parking Tickets</h1>
-      <Link href="/about" className="nav-link">About</Link>
-      <form onSubmit={handleSubmit} className="ticket-form">
-        <input
-          value={plate}
-          onChange={(e) => setPlate(e.target.value)}
-          placeholder="ABC-1234"
-        />
-        <button type="submit">Create Ticket</button>
-      </form>
-      <ul className="ticket-list">
-        {tickets.map((ticket) => (
-          <li key={ticket.id} className="ticket-item">
-            {ticket.plate} — {ticket.status}
-          </li>
-        ))}
-      </ul>
+      <header className="app-header">
+        <div>
+          <h1 className="app-title">Parking Ticket System</h1>
+          <p style={{ fontSize: '0.85rem', color: '#94a3b8', marginTop: '0.25rem' }}>
+            Real-Time Live Feed Monorepo
+          </p>
+        </div>
+        <div className="connection-status">
+          <span className={`status-dot ${connected ? 'connected' : 'disconnected'}`} />
+          {connected ? 'Live Socket Connected' : 'Connecting Socket...'}
+        </div>
+      </header>
+
+      <TicketForm />
+
+      <section>
+        <h2 className="section-title">Issued Tickets ({tickets.length})</h2>
+        <TicketList tickets={tickets} loading={loading} />
+      </section>
     </main>
   );
 }
-

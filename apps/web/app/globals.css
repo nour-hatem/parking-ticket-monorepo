@@ -1,6 +1,21 @@
-/* ─── Reset & base ──────────────────────────────────────── */
+/* ─── Global Reset & Modern Variables ────────────────────── */
+:root {
+  --bg-primary: #0f172a;
+  --bg-card: rgba(30, 41, 59, 0.7);
+  --bg-card-hover: rgba(51, 65, 85, 0.8);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --accent-blue: #38bdf8;
+  --accent-blue-hover: #0284c7;
+  --status-waiting-bg: rgba(245, 158, 11, 0.15);
+  --status-waiting-text: #fbbf24;
+  --status-paid-bg: rgba(16, 185, 129, 0.15);
+  --status-paid-text: #34d399;
+  --status-cancelled-bg: rgba(239, 68, 68, 0.15);
+  --status-cancelled-text: #f87171;
+}
 
-/* box-sizing: border-box — padding/border counted INSIDE the element's width */
 *,
 *::before,
 *::after {
@@ -9,98 +24,211 @@
   padding: 0;
 }
 
-/* System font stack — uses the OS's native font, no download needed */
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen, Ubuntu, sans-serif;
-  background-color: #f5f7fa;   /* very light grey — easier on the eyes than pure white */
-  color: #1a1a2e;              /* near-black — less harsh than #000 */
-  line-height: 1.6;            /* comfortable reading line spacing */
-  -webkit-font-smoothing: antialiased;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-primary);
+  background-image: radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.08) 0px, transparent 50%),
+                    radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.08) 0px, transparent 50%);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.5;
 }
 
-/* ─── Layout container ───────────────────────────────────── */
-
-/* Centers page content and caps it at 640px on wide screens */
 .container {
-  max-width: 640px;
-  margin: 2.5rem auto;         /* 2.5rem top/bottom, auto left/right = centered */
-  padding: 0 1.25rem;          /* side padding so content doesn't hug screen edges on mobile */
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
 }
 
-/* ─── Heading ────────────────────────────────────────────── */
-
-h1 {
-  font-size: 1.75rem;
-  margin-bottom: 1.25rem;      /* space between heading and the nav link / form below */
-}
-
-/* ─── Navigation link ────────────────────────────────────── */
-
-/* Makes the About link look like a proper link instead of plain inherited text */
-.nav-link {
-  display: inline-block;
-  margin-bottom: 1rem;
-  color: #0070f3;              /* Next.js blue — recognizable link color */
-  text-decoration: none;
-  font-size: 0.9rem;
-}
-
-.nav-link:hover {
-  text-decoration: underline;  /* visual feedback on hover */
-}
-
-/* ─── Ticket form ────────────────────────────────────────── */
-
-/* Puts input and button in a row with a gap between them */
-.ticket-form {
+.app-header {
   display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1.75rem;      /* breathing room between form and the list */
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
 }
 
-/* Input stretches to fill all available width, leaving button its natural size */
+.app-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  background: linear-gradient(to right, #38bdf8, #818cf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.status-dot.connected {
+  background-color: #34d399;
+  box-shadow: 0 0 8px #34d399;
+}
+
+.status-dot.disconnected {
+  background-color: #f87171;
+}
+
+/* ─── Ticket Form ────────────────────────────────────────── */
+.ticket-form {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.ticket-form h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.form-group {
+  display: flex;
+  gap: 0.75rem;
+}
+
 .ticket-form input {
-  flex: 1;                     /* takes all remaining space after the button */
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #ced4da;   /* light grey border */
-  border-radius: 6px;
-  font-size: 1rem;
-  font-family: inherit;        /* use the same font as the rest of the page */
-  outline-color: #0070f3;      /* blue focus ring instead of browser default */
+  flex: 1;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border-color);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.ticket-form input:focus {
+  border-color: var(--accent-blue);
 }
 
 .ticket-form button {
-  padding: 0.5rem 1.1rem;
-  background-color: #0070f3;
-  color: #fff;
+  background: var(--accent-blue);
+  color: #0f172a;
+  font-weight: 600;
   border: none;
-  border-radius: 6px;
-  font-size: 1rem;
-  font-family: inherit;
-  cursor: pointer;             /* shows a hand cursor on hover — signals clickability */
-  transition: background-color 0.15s ease;  /* smooth color change on hover */
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
-.ticket-form button:hover {
-  background-color: #005bb5;   /* darker shade — confirms interaction */
+.ticket-form button:hover:not(:disabled) {
+  background: var(--accent-blue-hover);
+  color: #fff;
 }
 
-/* ─── Ticket list ────────────────────────────────────────── */
-
-/* Removes default bullet points; stacks items vertically with gaps */
-.ticket-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+.ticket-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-/* Each ticket row: light background card with subtle border */
-.ticket-item {
-  background-color: #ffffff;   /* white card against the light-grey page background */
+.form-error {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
   padding: 0.75rem 1rem;
-  border-radius: 6px;
-  border: 1px solid #e2e8f0;   /* very light border — defines the card without being heavy */
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
 }
 
+/* ─── Ticket Grid & Cards ────────────────────────────────── */
+.section-title {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+}
+
+.ticket-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.ticket-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  padding: 1.25rem;
+  border-radius: 12px;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.ticket-card:hover {
+  transform: translateY(-2px);
+  background: var(--bg-card-hover);
+}
+
+.ticket-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.plate-number {
+  font-family: monospace;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--accent-blue);
+}
+
+.status-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+}
+
+.status-waiting {
+  background: var(--status-waiting-bg);
+  color: var(--status-waiting-text);
+}
+
+.status-paid {
+  background: var(--status-paid-bg);
+  color: var(--status-paid-text);
+}
+
+.status-cancelled {
+  background: var(--status-cancelled-bg);
+  color: var(--status-cancelled-text);
+}
+
+.ticket-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border-color);
+  padding-top: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.empty-state, .loading-spinner {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  border: 1px dashed var(--border-color);
+  border-radius: 12px;
+}
