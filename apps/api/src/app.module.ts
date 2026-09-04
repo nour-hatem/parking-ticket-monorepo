@@ -43,16 +43,28 @@ import { TicketsModule } from './tickets/tickets.module.js';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get<string>('DATABASE_HOST', 'localhost'),
-        port: configService.get<number>('DATABASE_PORT', 5433),
-        username: configService.get<string>('DATABASE_USER', 'parking'),
-        password: configService.get<string>('DATABASE_PASSWORD', 'parking123'),
-        database: configService.get<string>('DATABASE_NAME', 'parking_db'),
-        entities: [TicketEntity],
-        synchronize: false,
-      }),
+      useFactory: (configService: ConfigService) => {
+        const dbUrl = configService.get<string>('DATABASE_URL');
+        if (dbUrl && !dbUrl.includes('localhost')) {
+          return {
+            type: 'postgres',
+            url: dbUrl,
+            ssl: { rejectUnauthorized: false },
+            entities: [TicketEntity],
+            synchronize: false,
+          };
+        }
+        return {
+          type: 'postgres',
+          host: configService.get<string>('DATABASE_HOST', 'localhost'),
+          port: configService.get<number>('DATABASE_PORT', 5433),
+          username: configService.get<string>('DATABASE_USER', 'parking'),
+          password: configService.get<string>('DATABASE_PASSWORD', 'parking123'),
+          database: configService.get<string>('DATABASE_NAME', 'parking_db'),
+          entities: [TicketEntity],
+          synchronize: false,
+        };
+      },
     }),
     PrismaModule,
     AuthModule,
